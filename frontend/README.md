@@ -68,3 +68,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Useful git commands specific to this repo
+
+1. To show code changes for `commit-id` excluding files `package-lock.json` `packagejson` of both frontend/backend directories.
+`git show <commit-id> -- . ':!package-lock.json' ':!package.json' ':!../package-lock.json' ':!..package.json'`
