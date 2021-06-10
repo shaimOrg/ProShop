@@ -18,7 +18,7 @@ app.get('/api/products/:id', (req, res) => {
     res.send(product)
 })
 
-getEnv = () => {
+const getEnv = () => {
     if (process.env.NODE_ENV)
         return process.env.NODE_ENV
     return "PRODUCTION"
