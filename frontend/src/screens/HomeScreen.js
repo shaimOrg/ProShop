@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from "react-bootstrap"
 import Product from '../components/Product'
-import axios from 'axios'
+import { listProducts } from '../actions/productActions'
 
 const HomeScreen = () => {
-    //products - variable conatining all products to display
-    //setProducts - function to change products variable
-    const [products, setProducts] = useState([]);
+
+    const dispath = useDispatch()
+
+    const productList = useSelector(state => state.productList)
+    const { loading, error, products } = productList
 
     //----------------- useEffect explanation -----------------
     //similar to componentDidMount() and componentDidUpdate()
@@ -22,27 +25,23 @@ const HomeScreen = () => {
     //  - Has props or state values [prop1, prop2, ..., state1, state2]: the side-effect runs only when any depenendecy value changes. Refer: https://dmitripavlutin.com/react-useeffect-explanation/#2-the-dependencies-of-useeffect
     //Does useEffect run after every render? Yes! By default, it runs both after the first render and after every update. Refer: https://reactjs.org/docs/hooks-effect.html#example-using-hooks
     useEffect(() => {
-        const fetchProducts = async () => {
-            //const res = await axios.get('/api/products')
-            const { data } = await axios.get('/api/products')
-            //using setProducts function to change products variable
-            setProducts(data);
-        }
-
-        //to get all products
-        fetchProducts();
-    }, [])  //running useEffect at initial rendering of component
-
+        dispath(listProducts())
+    }, [dispath])  //running useEffect at initial rendering of component
     return (
         <>
             <h1>Latest Products</h1>
-            <Row>
-                {products.map((product) => (
-                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                        <Product product={product} />
-                    </Col>
-                ))}
-            </Row>
+            {loading ? (
+                <h2>Loading...</h2>
+            ) : error ? (
+                <h3>{error}</h3>
+            ) : (
+                <Row>
+                    {products.map((product) => (
+                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                            <Product product={product} />
+                        </Col>
+                    ))}
+                </Row>)}
         </>
     )
 }
