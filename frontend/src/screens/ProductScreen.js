@@ -7,7 +7,7 @@ import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ history, match }) => {
     const [qty, setQty] = useState(0);
 
     const dispath = useDispatch();
@@ -20,6 +20,10 @@ const ProductScreen = ({ match }) => {
         dispath(listProductDetails(match.params.id));
     }, [dispath, match])
     /* eslint-enable */
+
+    const addToCartHandler = () => {
+        history.push(`/cart/${match.params.id}?qty=${qty}`)
+    }
 
     return (
         <>
@@ -86,7 +90,7 @@ const ProductScreen = ({ match }) => {
                                 )}
 
                                 <ListGroup.Item>
-                                    <Button className='btn-block' type='button' disabled={product.countInStock === 0}>Add to Cart</Button>
+                                    <Button onClick={addToCartHandler} className='btn-block' type='button' disabled={product.countInStock === 0}>Add to Cart</Button>
                                 </ListGroup.Item>
                             </ListGroup>
                         </Card>
